@@ -10,33 +10,36 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.crypto.*;
 
 
 public class App
 {
-	private static final int queueSize=5;
+	private static final int queueSize=2;
 	
    public static void main(String[] args) 
       throws IOException, GeneralSecurityException, ClassNotFoundException
    {
 	   	WETAES wetaes = new WETAES();
-	   	BlockingQueue<String> queue = new ArrayBlockingQueue(queueSize); //Thread safe data structures
-	   
+	   	BlockingQueue<String> queue = new PriorityBlockingQueue<String>(queueSize); //Thread safe data structures used blocking queue
+	   	String input = "plik5.txt";
+	   	String output = "newIS.txt";
+	   	String encryptedFile = "irekEncrypted.txt";
+		String Keyfile = "KeyFile"; 
 		
 		try {
-			wetaes.keyGen(); //one resource used by all tasks
+			wetaes.keyGen(); //one resource used by all tasks-generation of a key
 			
 			Runnable task1 = () -> {
-				while(true) {
+				while(true) {  //used flag 
 					try {
-						
-						String szyfruj = queue.take();
-						String rozszyfruj = "FileDecrypted"+szyfruj.substring(5);
-						wetaes.decrypt(szyfruj, rozszyfruj);
-						System.out.println("Created "+rozszyfruj+" file");
-						Thread.sleep(100);
+							
+						wetaes.encrypt(input, encryptedFile);
+						System.out.println("TASK 1 ->Created "+encryptedFile);
+						Thread.sleep(1000);
 						
 					} catch (ClassNotFoundException | IOException | GeneralSecurityException e) {
 						// TODO Auto-generated catch block
@@ -55,13 +58,14 @@ public class App
 					try {
 						
 						//int i = (int)(Math.random()+5);
-						int i = 1;
-						String szyfruj = "FileDecrypted"+i+".txt";
-						wetaes.encrypt("KeyFIle"+i+".txt", szyfruj);
-						queue.put(szyfruj);
-						System.out.println("Created "+szyfruj+" file");
+						int i = 2;
+					
+						String decrypt = "FileDecrypted"+i+".txt";
+						wetaes.decrypt(encryptedFile, output,Keyfile); //encrypt("KeyFIle"+i+".txt", encrypt);
+						queue.put(decrypt);
+						System.out.println("TAST 2 -- >Created "+decrypt);
 						
-						Thread.sleep(100);
+						Thread.sleep(1000);
 						
 					} catch (ClassNotFoundException | IOException | GeneralSecurityException e) {
 						// TODO Auto-generated catch block
@@ -77,10 +81,9 @@ public class App
 				
 			};
 			
-			
-			
 			ExecutorService execute = Executors.newCachedThreadPool();
-			execute.execute(task1);
+			
+			execute.execute(task1);  // run task1 followed by task2
 			execute.execute(task2);
 			execute.shutdown();
 			

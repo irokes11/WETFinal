@@ -19,7 +19,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 public class WETAES {
-	//private static final int KEYSIZE = 512;
+
 	
 	// creation of the key
 	private static final String KeyFile = "KeyFile";
@@ -53,13 +53,13 @@ public class WETAES {
           Cipher cipher = Cipher.getInstance("AES");
           cipher.init(mode, key);
           Util.crypt(in, out, cipher); // final declaration of encryption 
-          System.out.println("Encrypted file created "+" "+encryptedFile.toString() );
+          System.out.println("Created file "+" "+encryptedFile.hashCode());
        }
     } //End of encryption
     
-    
+     	
     //Decryption of files
-    public synchronized void decrypt(String encryptedFile, String decryptedFIle) throws FileNotFoundException, IOException, ClassNotFoundException, GeneralSecurityException
+    public synchronized void decrypt(String encryptedFile, String decryptedFIle,String Key) throws FileNotFoundException, IOException, ClassNotFoundException, GeneralSecurityException
     {
   	  int mode;
   	  mode = Cipher.DECRYPT_MODE; //declaration of decryption step
@@ -73,7 +73,7 @@ public class WETAES {
            Cipher cipher = Cipher.getInstance("AES");
            cipher.init(mode, key);
            Util.crypt(in, out, cipher);
-           System.out.println("Decrypted file created"+" "+out.toString());
+           System.out.println("Created file "+" "+out.hashCode());
         } //End of Decryption
         
     }
