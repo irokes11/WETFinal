@@ -21,7 +21,7 @@ public class App
 	private static final int queueSize=2;
 	
    public static void main(String[] args) 
-      throws IOException, GeneralSecurityException, ClassNotFoundException
+      throws IOException, GeneralSecurityException
    {
 	   	WETAES wetaes = new WETAES();
 	   	BlockingQueue<String> queue = new PriorityBlockingQueue<String>(queueSize); //Thread safe data structures used blocking queue
@@ -57,11 +57,11 @@ public class App
 				while(true) {
 					try {
 						
-						//int i = (int)(Math.random()+5);
+					
 						int i = 2;
 					
 						String decrypt = "FileDecrypted"+i+".txt";
-						wetaes.decrypt(encryptedFile, output,Keyfile); //encrypt("KeyFIle"+i+".txt", encrypt);
+						wetaes.decrypt(encryptedFile, output,Keyfile); 
 						queue.put(decrypt);
 						System.out.println("TAST 2 -- >Created "+decrypt);
 						

@@ -24,7 +24,7 @@ public class WETAES {
 	// creation of the key
 	private static final String KeyFile = "KeyFile";
 	
-	public void keyGen() throws NoSuchAlgorithmException, FileNotFoundException, IOException
+	public void keyGen() throws NoSuchAlgorithmException, IOException
     {
 	   synchronized(this) { // used instead of using in method
        KeyGenerator keygen = KeyGenerator.getInstance("AES");
